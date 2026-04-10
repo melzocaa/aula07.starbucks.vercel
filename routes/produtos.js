@@ -3,7 +3,7 @@ const router = express.Router();
 let supabase = require('../data/supabase');
 
 router.get('/erro-teste', (req, res) => {
-    throw new Error("O servidor do milkshakito tropeçou!");
+    throw new Error("O servidor do Starbucks caiu!");
 });
 
 router.get('/', async (req, res, next) => {
