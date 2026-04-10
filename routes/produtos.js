@@ -14,7 +14,7 @@ router.get('/', async (req, res, next) => {
         if (categoriaId){
             consulta = consulta.eq('categoriaId', categoriaId);
         }
-        const {data, error} = await consulta.order('id', {ascendir: true});
+        const {data, error} = await consulta.order('id', {ascending: true});
 
         if (error) throw error;
         res.json(data);
