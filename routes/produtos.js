@@ -3,57 +3,57 @@ const router = express.Router();
 let supabase = require('../data/supabase');
 
 router.get('/erro-teste', (req, res) => {
-    throw new Error("O servidor erro teste ")
+    throw new Error("O servidor do milkshakito tropeçou!");
 });
 
-router.get('/', async (req,res, next) => {
+router.get('/', async (req, res, next) => {
     try{
-        const {categoriaId} = req.body;
+        const {categoriaId} = req.query;
         let consulta = supabase.from('produtos').select('*');
 
-        if(categoriaId){
+        if (categoriaId){
             consulta = consulta.eq('categoriaId', categoriaId);
         }
-        const{data, error} = await consulta.order('id', {ascending: true});
-        
-        if(error) throw error;
+        const {data, error} = await consulta.order('id', {ascendir: true});
+
+        if (error) throw error;
         res.json(data);
     }catch (err) {
         next(err);
     }
 });
 
-router.get('/:id', async (req, res, next) => {
+router.get('/:id', async (req, res) => {
     try{
         const {id} = req.params;
-        const{data, error} = await supabase
+        const{data,error} = await supabase
         .from('produtos')
         .select('*')
         .eq('id', id)
         .maybeSingle();
 
         if (error) throw error;
-        if(data){
+        if(data) {
             res.json(data);
         }else {
-            res.status(404).json({mensagem: 'não encontrado'});
+            res.status(404).json ({mensagem: 'Não encontrado'})
         }
     }catch (err) {
-        next(err);
+        next(err)
     }
 });
 
 router.post('/', async (req, res, next) => {
-    try{
-        const {data, error} = await supabase
+    try {
+        const { data, error} = await supabase
         .from('produtos')
         .insert([req.body])
         .select();
 
         if (error) throw error;
         res.status(201).json(data[0]);
-    }catch (err){
-        next(err);
+    }catch (err) {
+        next(err); 
     }
 });
 
@@ -61,10 +61,10 @@ router.put('/:id', async (req, res, next) => {
     try{
         const {id} = req.params;
         const {data, error} = await supabase
-        .from('produtos')
-        .update(req.body)
-        .eq('id', id)
-        .select();
+            .from('produtos')
+            .update(req.body)
+            .eq('id', id)
+            .select();
 
         if (error) throw error;
         if (data && data.length > 0){
@@ -73,7 +73,7 @@ router.put('/:id', async (req, res, next) => {
             res.status(404).json({mensagem: 'não encontrado'});
         }
     }catch (err){
-        next(err);
+        next(err)
     }
 });
 
